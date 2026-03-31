@@ -1,0 +1,272 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #00f5ff;
+  --color-secondary: #bd00ff;
+  --color-bg-dark: #020408;
+  --font-orbitron: "Orbitron", sans-serif;
+  --font-space-grotesk: "Space Grotesk", sans-serif;
+  --font-gaming: "Russo One", sans-serif;
+  --font-terminal: "JetBrains Mono", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+
+body {
+  background-color: var(--color-bg-dark);
+  color: white;
+  overflow-x: hidden;
+  cursor: auto; /* Changed from none to auto to ensure the custom cursor has a fallback or is better managed */
+  font-family: var(--font-space-grotesk);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-orbitron);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-secondary);
+  border-radius: 10px;
+  box-shadow: 0 0 10px var(--color-secondary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00ffff;
+}
+
+/* Base Utilities */
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+}
+
+/* Glassmorphism Utility */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 2px rgba(255, 255, 255, 0.1), inset 0 -1px 2px rgba(0, 0, 0, 0.1);
+  transform: translateZ(0); /* Optimize for GPU */
+}
+
+.glow-primary {
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.1);
+  border-color: rgba(0, 255, 255, 0.3);
+}
+
+.glow-secondary {
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.3), inset 0 0 10px rgba(124, 58, 237, 0.1);
+  border-color: rgba(124, 58, 237, 0.3);
+}
+
+.glow-border {
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2), inset 0 0 15px rgba(124, 58, 237, 0.1);
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s infinite;
+}
+
+/* Glass Surface Styles */
+.glass-surface {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.26s ease-out;
+}
+
+.glass-surface__filter {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  z-index: -1;
+}
+
+.glass-surface__content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: inherit;
+  position: relative;
+  z-index: 1;
+}
+
+.glass-surface--svg {
+  background: light-dark(hsl(0 0% 100% / var(--glass-frost, 0)), hsl(0 0% 0% / var(--glass-frost, 0)));
+  backdrop-filter: var(--filter-id, url(#glass-filter)) saturate(var(--glass-saturation, 1));
+  box-shadow:
+    0 0 2px 1px light-dark(color-mix(in oklch, black, transparent 85%), color-mix(in oklch, white, transparent 65%)) inset,
+    0 0 10px 4px light-dark(color-mix(in oklch, black, transparent 90%), color-mix(in oklch, white, transparent 85%)) inset,
+    0px 4px 16px rgba(17, 17, 26, 0.05),
+    0px 8px 24px rgba(17, 17, 26, 0.05),
+    0px 16px 56px rgba(17, 17, 26, 0.05),
+    0px 4px 16px rgba(17, 17, 26, 0.05) inset,
+    0px 8px 24px rgba(17, 17, 26, 0.05) inset,
+    0px 16px 56px rgba(17, 17, 26, 0.05) inset;
+}
+
+.glass-surface--fallback {
+  background: rgba(10, 15, 25, 0.45); /* High contrast dark elegant tint */
+  backdrop-filter: blur(8px) saturate(200%) brightness(1.1);
+  -webkit-backdrop-filter: blur(8px) saturate(200%) brightness(1.1);
+  border: 1px solid rgba(0, 255, 255, 0.15); /* Clean cyan rim */
+  box-shadow:
+    0 4px 30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 0 rgba(0, 255, 255, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  .glass-surface--fallback {
+    background: rgba(10, 15, 25, 0.5); /* slightly denser in dark mode */
+    border: 1px solid rgba(0, 255, 255, 0.2);
+  }
+}
+
+@supports not (backdrop-filter: blur(10px)) {
+  .glass-surface--fallback {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-surface--fallback::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: inherit;
+    z-index: -1;
+  }
+}
+
+.cyber-grid {
+  background-image: 
+    linear-gradient(rgba(0, 245, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 245, 255, 0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+.scanline {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanline::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(0, 245, 255, 0.1);
+  box-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+  animation: scan 6s linear infinite;
+  pointer-events: none;
+  z-index: 50;
+}
+
+@keyframes scan {
+  0% { top: -2%; }
+  100% { top: 102%; }
+}
+
+.glass-surface:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Gaming Console UI Utilities */
+.console-button {
+  background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5), inset 1px 1px 2px rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+}
+
+.console-button:active {
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.8);
+  transform: translateY(1px);
+}
+
+.console-screen {
+  background: #000;
+  border: 8px solid #1a1a1a;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: inset 0 0 20px rgba(0, 245, 255, 0.2);
+}
+
+.console-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.hero-bottom-mask {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 15vh;
+  background: linear-gradient(to top, var(--color-bg-dark), transparent);
+  pointer-events: none;
+  z-index: 20;
+}
+
+.octagonal-frame {
+  clip-path: polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%);
+}
+
+.hud-scanline {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 245, 255, 0.1) 50%,
+    transparent 51%,
+    transparent
+  );
+  background-size: 100% 4px;
+  animation: scanline 10s linear infinite;
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
