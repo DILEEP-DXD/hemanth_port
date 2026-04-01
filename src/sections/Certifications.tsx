@@ -31,15 +31,7 @@ const certifications = [
     id: "IAN-DSA-22",
     score: "A+"
   },
-  {
-    title: "Advanced DSA",
-    issuer: "LPU_Certify",
-    date: "May '24",
-    image: "/hemanth-advanced-dsa.pdf", // PDF
-    link: "/hemanth-advanced-dsa.pdf",
-    id: "LPU-CSE-205",
-    score: "COMPLETE"
-  },
+
   {
     title: "Computer Networking",
     issuer: "Coursera",
@@ -95,7 +87,7 @@ export default function Certifications() {
           <p className="text-gray-500 font-mono text-sm max-w-2xl mx-auto uppercase tracking-widest">{" >> "} Verification successful. displaying authenticated certificates...</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-12 max-w-4xl mx-auto">
           {certifications.map((cert, index) => (
             <motion.div
               key={index}

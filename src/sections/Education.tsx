@@ -6,30 +6,30 @@ import { GraduationCap, Calendar, MapPin, Sparkles, BookOpen } from "lucide-reac
 
 const educationDetails = [
   {
-    degree: "B.Tech in Computer Science",
+    degree: "Bachelor of Technology",
     institution: "Lovely Professional University",
-    location: "India",
-    date: "2021 - Present",
-    grade: "Grade: Satisfactory",
-    description: "Specializing in software engineering, machine learning, and full stack development.",
+    location: "Punjab",
+    date: "Aug’ 23 – Present",
+    grade: "Computer Science and Engineering; CGPA: 5.52",
+    description: "Focusing on large-scale software development, advanced algorithms, and specialized AI/ML systems.",
     icon: <Sparkles className="w-5 h-5 text-[var(--color-primary)]" />
   },
   {
-    degree: "Intermediate (MPC)",
-    institution: "Sri Chaitanya Junior College",
-    location: "India",
-    date: "2019 - 2021",
-    grade: "Grade: Excellence",
-    description: "Focused on core sciences and mathematics, developing strong analytical and logical reasoning skills.",
+    degree: "Intermediate",
+    institution: "Sri Chaitanya junior College",
+    location: "Vijayawada, Andhra Pradesh",
+    date: "Mar’ 21 – May’ 23",
+    grade: "Percentage: 69%",
+    description: "Developing a strong foundation in core STEM subjects with intensive problem-solving training.",
     icon: <BookOpen className="w-5 h-5 text-[var(--color-primary)]" />
   },
   {
-    degree: "Matriculation (10th Grade)",
-    institution: "Sri Chaitanya School",
-    location: "India",
-    date: "2018 - 2019",
-    grade: "Grade: Outstanding",
-    description: "Built a robust foundation in academics and extracurriculars.",
+    degree: "Matriculation",
+    institution: "Sri Chaitanya Techno School",
+    location: "Vijayawada, Andhra Pradesh",
+    date: "Mar’ 20 – May’ 21",
+    grade: "Outcome: Successful Completion",
+    description: "Building the groundwork for academic excellence and technical curiosity.",
     icon: <GraduationCap className="w-5 h-5 text-[var(--color-primary)]" />
   }
 ];
@@ -72,7 +72,7 @@ export default function Education() {
         </motion.div>
 
         {/* Journey Timeline Container */}
-        <div ref={containerRef} className="max-w-5xl mx-auto relative px-4 sm:px-0">
+        <div ref={containerRef} className="max-w-7xl mx-auto relative px-4 sm:px-0">
           
           {/* Animated Central Vertical Line (Desktop) */}
           <div className="absolute left-[38px] sm:left-1/2 top-0 bottom-0 w-1 bg-white/5 transform sm:-translate-x-1/2 rounded-full overflow-hidden hidden sm:block">
@@ -121,7 +121,7 @@ export default function Education() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-15%" }}
                   transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-                  className={`w-full sm:w-[calc(50%-50px)] pl-24 sm:pl-0 ${
+                  className={`w-full sm:w-[calc(50%-80px)] pl-24 sm:pl-0 ${
                     isEven ? "sm:text-right sm:pr-12" : "sm:text-left sm:pl-12"
                   } relative pt-2 sm:pt-0`}
                 >
@@ -147,13 +147,16 @@ export default function Education() {
                              </div>
                            </div>
                            
-                           <div className="flex flex-col gap-2 text-sm text-[var(--color-primary)] sm:min-w-[140px] mt-2 sm:mt-0">
-                               <span className="flex items-center gap-2 text-[var(--color-primary)] bg-[var(--color-primary)]/10 px-3 py-1.5 rounded-full border border-[var(--color-primary)]/20 w-fit font-mono">
-                                 <Calendar className="w-4 h-4" />
-                                 {item.date}
-                               </span>
-                               <span className="flex items-center gap-2 text-gray-400 font-mono text-xs">
-                                 <MapPin className="w-4 h-4 text-[var(--color-primary)]/70" />
+                           <div className="flex flex-col gap-3 items-end sm:min-w-[180px] mt-4 sm:mt-0">
+                               <div className="relative group/date">
+                                  <div className="absolute -inset-2 bg-[var(--color-primary)]/10 blur-lg opacity-0 group-hover/date:opacity-100 transition-opacity" />
+                                  <span className="relative flex items-center gap-3 text-[var(--color-primary)] bg-black/40 px-4 py-2 rounded-xl border-2 border-[var(--color-primary)]/30 font-orbitron text-[10px] tracking-widest font-black shadow-[0_0_15px_rgba(0,245,255,0.1)]">
+                                    <Calendar className="w-4 h-4 animate-pulse" />
+                                    {item.date.toUpperCase()}
+                                  </span>
+                               </div>
+                               <span className="flex items-center gap-2 text-gray-400 font-mono text-[10px] tracking-[0.2em] uppercase opacity-60">
+                                 <MapPin className="w-3 h-3 text-[var(--color-primary)]" />
                                  {item.location}
                                </span>
                            </div>

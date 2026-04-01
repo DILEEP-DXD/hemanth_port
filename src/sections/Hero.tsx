@@ -60,7 +60,7 @@ export default function Hero() {
               </h2>
               <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter font-gaming leading-[0.8] uppercase mt-2">
                 <span className="text-gradient bg-clip-text text-transparent bg-gradient-to-r from-[#00f5ff] via-[#3b82f6] to-[#bd00ff] drop-shadow-[0_0_30px_rgba(0,245,255,0.4)]">
-                  Hemanth <br /> Kumar
+                  Hemanth <br /> Kumar Reddy
                 </span>
               </h2>
             </div>
@@ -85,8 +85,8 @@ export default function Hero() {
               <motion.a
                 whileHover={{ scale: 1.05, x: 5 }}
                 whileTap={{ scale: 0.95 }}
-                href="/certificates/Hemanth.pdf"
-                download="Hemanth_Kumar_Reddy_Resume.pdf"
+                href="/hemanth-cv.pdf"
+                target="_blank"
                 className="group relative px-8 py-4 border-2 border-[var(--color-primary)]/30 text-[var(--color-primary)] font-black font-gaming text-sm tracking-widest hover:bg-[var(--color-primary)]/10 transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden"
                 style={{ clipPath: 'polygon(0 0, 90% 0, 100% 30%, 100% 100%, 10% 100%, 0 70%)' }}
               >
@@ -95,7 +95,7 @@ export default function Hero() {
 
               <div className="sm:col-span-2 flex items-center gap-4 mt-2">
                 <SocialIcon
-                  href="https://www.linkedin.com/in/"
+                  href="https://www.linkedin.com/in/hemanth110206/"
                   icon={Linkedin}
                   colorClass="bg-black/40 border border-[#00f5ff]/20"
                   shadowClass="shadow-[0_0_15px_rgba(0,245,255,0.2)] hover:shadow-[0_0_25px_rgba(0,245,255,0.4)]"
@@ -107,7 +107,7 @@ export default function Hero() {
                   shadowClass="shadow-[0_0_15px_rgba(189,0,255,0.2)] hover:shadow-[0_0_25px_rgba(189,0,255,0.4)]"
                 />
                 <SocialIcon
-                  href="mailto:hemanthkumarreddy038@gmail.com"
+                  href="mailto:hemanthdkr08@gmail.com"
                   icon={Mail}
                   colorClass="bg-black/40 border border-white/10"
                   shadowClass="shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_25px_rgba(255,255,255,0.15)]"
@@ -135,7 +135,7 @@ export default function Hero() {
               <img
                 src="/file_000000001784720ba6580808de98d6ba.png"
                 alt="Hemanth Kumar"
-                className="w-full h-full object-cover scale-110"
+                className="w-full h-full object-cover scale-110 object-top"
                 referrerPolicy="no-referrer"
                 loading="lazy"
               />
@@ -145,7 +145,7 @@ export default function Hero() {
               <div className="absolute inset-0 hud-scanline opacity-20 pointer-events-none" />
 
               {/* Animated HUD Text Markers */}
-              <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-2">
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2">
                 <Activity className="w-3 h-3 text-[var(--color-primary)] animate-pulse" />
                 <span className="text-[8px] font-gaming text-[var(--color-primary)] tracking-[0.3em]">SCAN_ACTIVE</span>
               </div>
@@ -204,7 +204,7 @@ export default function Hero() {
       {/* Robot Spline - Absolute positioned at the very bottom */}
       <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] pointer-events-auto z-10 transition-opacity duration-1000 overflow-visible">
         {isHeroInView && (
-          <Spline scene="https://prod.spline.design/XsM5ixmTunsJ4Xem/scene.splinecode" className="overflow-visible" />
+          <Spline scene="https://prod.spline.design/XsM5ixmTunsJ4Xem/scene.splinecode" className="!overflow-visible" />
         )}
       </div>
 

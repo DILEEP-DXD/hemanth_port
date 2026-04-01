@@ -8,8 +8,8 @@ const projects = [
     description: "Constructed a gym website where users can register and explore exercise and diet-related pages.",
     extendedDescription: "Integrated user authentication using Servlets and JSP to validate credentials. Architected and managed the MySQL database for storing user data. Built following MVC architecture for a structured workflow, achieving 100% success rate during authentication tests.",
     tags: ["Java", "Servlets", "JSP", "MySQL", "HTML/CSS"],
-    link: "https://github.com/HemanthKumarReddy", 
-    github: "https://github.com/HemanthKumarReddy",
+    link: "https://github.com/Hemanthkumarreddyd", 
+    github: "https://github.com/Hemanthkumarreddyd",
     image: "/gym-app.png",
     category: "FULL_STACK",
     status: "COMPLETE"
@@ -19,8 +19,8 @@ const projects = [
     description: "Developed a Deaf Sign Language Prediction system using a CNN model to interpret gestures.",
     extendedDescription: "Collected and pre-processed sign language gesture images using Python, Matplotlib, and CV2. Optimized accuracy with dropout and batch normalization. Assists in communication for the deaf community by translating gestures into text or speech.",
     tags: ["Python", "CNN", "CV2", "Matplotlib", "Deep Learning"],
-    link: "https://github.com/HemanthKumarReddy",
-    github: "https://github.com/HemanthKumarReddy",
+    link: "https://github.com/Hemanthkumarreddyd",
+    github: "https://github.com/Hemanthkumarreddyd",
     image: "/sign-interpreter.png",
     category: "COMPUTER_VISION",
     status: "COMPLETE"
@@ -30,8 +30,8 @@ const projects = [
     description: "Developed a predictive model using Random Forest to estimate travel times based on real-world data.",
     extendedDescription: "Processed and analysed transportation data using Pandas, NumPy, and Seaborn for data cleaning and visualization. Trained machine learning models using Scikit-Learn, improving accuracy through feature selection and rigorous metric evaluation (MAE, F1-score).",
     tags: ["Python", "Random Forest", "Scikit-Learn", "Pandas"],
-    link: "https://github.com/HemanthKumarReddy",
-    github: "https://github.com/HemanthKumarReddy",
+    link: "https://github.com/Hemanthkumarreddyd",
+    github: "https://github.com/Hemanthkumarreddyd",
     image: "/travel-predictor.png",
     category: "AI/ML",
     status: "COMPLETE"
@@ -152,7 +152,7 @@ export default function Projects() {
            className="mt-16 text-center"
         >
           <a
-            href="https://github.com/HemanthKumarReddy"
+            href="https://github.com/Hemanthkumarreddyd"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-[var(--color-primary)] hover:text-black hover:border-[var(--color-primary)] transition-all font-orbitron font-bold text-sm"

@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Mail, MapPin, Phone, CheckCircle2, AlertCircle, Loader2, Database, ShieldAlert, Activity, Terminal } from "lucide-react";
+import { Send, Mail, MapPin, Phone, CheckCircle2, AlertCircle, Loader2, Database, ShieldAlert, Activity, Terminal, Linkedin, Github, FileText } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import emailjs from '@emailjs/browser';
 
@@ -15,7 +15,7 @@ const TerminalLine: React.FC<{ text: string; delay?: number }> = ({ text, delay 
   </motion.div>
 );
 
-export default function Contact() {
+export default function Contact({ onPreviewResume }: { onPreviewResume?: () => void }) {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [logs, setLogs] = useState<string[]>(["SYSTEM_INITIALIZED", "AWAITING_INPUT..."]);
@@ -76,7 +76,7 @@ export default function Contact() {
             <div className="w-16 h-16 rounded-2xl bg-[var(--color-primary)]/5 flex items-center justify-center border-t border-l border-[var(--color-primary)]/30 shadow-[0_0_30px_rgba(0,245,255,0.1)]">
               <Database className="w-8 h-8 text-[var(--color-primary)] opacity-80" />
             </div>
-            <h2 className="text-4xl md:text-6xl font-black font-gaming text-white uppercase tracking-tighter">DATA_LINK</h2>
+            <h2 className="text-4xl md:text-6xl font-black font-gaming text-white uppercase tracking-tighter">Execute Contact</h2>
           </motion.div>
           <div className="h-1 w-24 bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent" />
         </div>
@@ -221,25 +221,81 @@ export default function Contact() {
           </div>
         </motion.div>
 
-        {/* Global Contact Info Footer */}
-        <div className="mt-20 flex flex-wrap justify-center gap-12 border-t border-white/5 pt-12">
-          <ContactDetail icon={Mail} label="Comms" value="hemanthkumarreddy@gmail.com" />
+        <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-8 border-t border-white/5 pt-12">
+          <ContactDetail icon={Mail} label="Comms" value="hemanthdkr08@gmail.com" href="mailto:hemanthdkr08@gmail.com" />
           <ContactDetail icon={MapPin} label="Location" value="India [REDACTED]" />
-          <ContactDetail icon={Phone} label="Uplink" value="+91 6302866572" />
+          <ContactDetail icon={Phone} label="Uplink" value="+91 6302866572" href="tel:+916302866572" />
+          <ContactDetail icon={Linkedin} label="LinkedIn" value="hemanth110206" href="https://www.linkedin.com/in/hemanth110206/" />
+          <ContactDetail icon={Github} label="GitHub" value="hemanthkumarreddyd" href="https://github.com/Hemanthkumarreddyd" />
+          <ContactDetail 
+            icon={FileText} 
+            label="CV" 
+            value="Preview / Download" 
+            isCV 
+            onPreview={onPreviewResume}
+            downloadHref="/hemanth-cv.pdf"
+          />
         </div>
       </div>
     </section>
   );
 }
 
-const ContactDetail = ({ icon: Icon, label, value }: { icon: any, label: string, value: string }) => (
-  <div className="flex items-center gap-6 group">
-    <div className="w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-500 group-hover:text-[var(--color-primary)] group-hover:border-[var(--color-primary)]/50 transition-all shadow-lg">
-      <Icon className="w-6 h-6" />
+const ContactDetail = ({ 
+  icon: Icon, 
+  label, 
+  value, 
+  href, 
+  isCV, 
+  onPreview, 
+  downloadHref 
+}: { 
+  icon: any, 
+  label: string, 
+  value: string, 
+  href?: string,
+  isCV?: boolean,
+  onPreview?: () => void,
+  downloadHref?: string
+}) => {
+  const content = (
+    <div className="flex items-center gap-6 group transition-all h-full">
+      <div className="w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-500 group-hover:text-[var(--color-primary)] group-hover:border-[var(--color-primary)]/50 group-hover:bg-[var(--color-primary)]/5 transition-all shadow-lg flex-shrink-0">
+        <Icon className="w-6 h-6" />
+      </div>
+      <div className="flex-grow min-w-0">
+        <p className="text-[10px] font-gaming text-white/20 uppercase tracking-[0.2em] mb-1.5">{label}</p>
+        {isCV ? (
+          <div className="flex items-center gap-4 mt-2">
+            <button 
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onPreview?.(); }}
+              className="text-[10px] font-gaming font-black text-[var(--color-primary)] border border-[var(--color-primary)]/30 px-3 py-1.5 rounded-lg hover:bg-[var(--color-primary)]/10 transition-all uppercase tracking-widest"
+            >
+              Preview
+            </button>
+            <a 
+              href={downloadHref} 
+              download
+              onClick={(e) => e.stopPropagation()}
+              className="text-[10px] font-gaming font-black text-gray-400 border border-white/10 px-3 py-1.5 rounded-lg hover:bg-white/5 hover:text-white transition-all uppercase tracking-widest"
+            >
+              Download
+            </a>
+          </div>
+        ) : (
+          <p className="text-sm md:text-base font-terminal text-gray-400 group-hover:text-white transition-colors truncate">{value}</p>
+        )}
+      </div>
     </div>
-    <div>
-      <p className="text-[10px] font-gaming text-white/20 uppercase tracking-[0.2em] mb-1.5">{label}</p>
-      <p className="text-sm md:text-base font-terminal text-gray-400 group-hover:text-white transition-colors">{value}</p>
-    </div>
-  </div>
-);
+  );
+
+  if (href && !isCV) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className="block w-full">
+        {content}
+      </a>
+    );
+  }
+
+  return <div className="block w-full">{content}</div>;
+};
