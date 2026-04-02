@@ -1,6 +1,6 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Cpu, ShieldCheck, Zap, Radio, X } from "lucide-react";
+import { Cpu, ShieldCheck, Zap, Radio } from "lucide-react";
 
 const bootLogs = [
   "BIOS_READY_STATION_V4",
@@ -13,7 +13,7 @@ const bootLogs = [
   "ALL_SYSTEMS_OPERATIONAL"
 ];
 
-export default function LoadingScreen({ onComplete }: { onComplete: () => void, key?: string }) {
+export default function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   const [progress, setProgress] = useState(0);
   const [currentLog, setCurrentLog] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
@@ -50,7 +50,13 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void, 
         opacity: isExiting ? 0 : 1,
         transition: { duration: 0.8, ease: "easeInOut" }
       }}
-      className="fixed inset-0 z-[10000] bg-[#020408] flex flex-col items-center justify-center overflow-hidden"
+      exit={{ 
+        opacity: 0,
+        scale: 1.1,
+        filter: "blur(20px)",
+        transition: { duration: 0.5 }
+      }}
+      className={`fixed inset-0 z-[10000] bg-[#020408] flex flex-col items-center justify-center overflow-hidden ${isExiting ? 'pointer-events-none' : 'pointer-events-auto'}`}
     >
       {/* Dynamic Background Grid */}
       <div className="absolute inset-0 opacity-20">

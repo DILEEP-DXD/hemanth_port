@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Cpu, Globe, Database, Users, Zap, ShieldCheck, Activity, X, ChevronRight, Terminal, Layout } from "lucide-react";
+import { Cpu, Globe, Database, Users, Zap, ShieldCheck, Activity, X, ChevronRight, Terminal, Layout, BrainCircuit, Settings } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const allSkills = [
@@ -37,6 +37,24 @@ const allSkills = [
     version: "v1.0",
     skills: ["Problem Solving", "Team Player", "Adaptability", "Leadership"],
     description: "Human-centric optimization protocols for collaborative mission success.",
+    color: "var(--color-secondary)"
+  },
+  {
+    title: "MACHINE_LEARNING",
+    icon: BrainCircuit,
+    id: "ML_A_05",
+    version: "v2.4",
+    skills: ["PyTorch", "TensorFlow", "NumPy", "Pandas", "OpenCV", "Scikit-learn"],
+    description: "Neural network architectures and deep learning models for predictive intelligence.",
+    color: "var(--color-primary)"
+  },
+  {
+    title: "TOOLS_DEVOPS",
+    icon: Settings,
+    id: "TD_S_06",
+    version: "v3.1",
+    skills: ["Git", "GitHub", "VS Code", "Linux", "Docker", "Postman"],
+    description: "Deployment pipelines and development environment optimization tools.",
     color: "var(--color-secondary)"
   },
 ];

@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import Spline from "@splinetool/react-spline";
 import { SiLeetcode } from "react-icons/si";
-import { Linkedin, Github, Mail, ShieldCheck, Zap, Terminal, Code2, BrainCircuit, X, Cpu, Activity, Database, User } from "lucide-react";
+import { Linkedin, Github, Mail, ShieldCheck, Zap, Terminal, Code2, BrainCircuit, X, Cpu, Activity, Database, User, FileDown } from "lucide-react";
 import ParticlesBackground from "../components/ParticlesBackground";
 import ScrollReveal from "../components/ScrollReveal";
 
@@ -11,6 +11,7 @@ const SocialIcon = ({ icon: Icon, colorClass, shadowClass, href }: { icon: any, 
     whileHover={{ y: 4, scale: 0.98 }}
     whileTap={{ y: 8, scale: 0.95 }}
     href={href}
+    data-magnetic
     className={`relative w-12 h-13 rounded-2xl flex items-center justify-center text-white transition-all duration-200 ${colorClass} ${shadowClass} group overflow-visible`}
   >
     {/* Inner strong top reflection for 3D realism */}
@@ -34,17 +35,11 @@ export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Only render heavy 3D Splines when the Hero section is actually visible!
-  // This saves massive GPU usage when the user scrolls down to other sections.
   const isHeroInView = useInView(containerRef, { margin: "200px 0px 500px 0px" });
 
   return (
     <section ref={containerRef} id="home" className="relative min-h-screen w-full flex items-center justify-center overflow-hidden pt-12 pb-0 cyber-grid scanline">
       <ParticlesBackground id="hero-particles" type="neural" />
-
-      {/* Home specific background (Restored!)
-      <div className="absolute inset-0 z-0 opacity-60 pointer-events-none transition-opacity duration-1000">
-        {isHeroInView && <Spline scene="https://prod.spline.design/e8lxPKR20tErh2ni/scene.splinecode" />}
-      </div> */}
 
       <div className="container mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12 h-full">
         {/* Left Column: Content */}
@@ -77,6 +72,7 @@ export default function Hero() {
                 whileHover={{ scale: 1.05, x: 5 }}
                 whileTap={{ scale: 0.95 }}
                 href="#projects"
+                data-magnetic
                 className="group relative px-8 py-4 bg-[var(--color-primary)] text-black font-black font-gaming text-sm tracking-widest transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden"
                 style={{ clipPath: 'polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%)' }}
               >
@@ -87,10 +83,11 @@ export default function Hero() {
                 whileTap={{ scale: 0.95 }}
                 href="/hemanth-cv.pdf"
                 target="_blank"
+                data-magnetic
                 className="group relative px-8 py-4 border-2 border-[var(--color-primary)]/30 text-[var(--color-primary)] font-black font-gaming text-sm tracking-widest hover:bg-[var(--color-primary)]/10 transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden"
                 style={{ clipPath: 'polygon(0 0, 90% 0, 100% 30%, 100% 100%, 10% 100%, 0 70%)' }}
               >
-                <ShieldCheck className="w-5 h-5" /> DOWNLOAD_INTEL
+                <FileDown className="w-5 h-5" /> DOWNLOAD_CV
               </motion.a>
 
               <div className="sm:col-span-2 flex items-center gap-4 mt-2">
@@ -133,7 +130,7 @@ export default function Hero() {
             {/* Inner Octagonal Container for Image */}
             <div className="relative w-full h-full octagonal-frame overflow-hidden border-2 border-[#00f5ff]/40 shadow-[inset_0_0_20px_rgba(0,245,255,0.2)]">
               <img
-                src="/file_000000001784720ba6580808de98d6ba.png"
+                src="/file_000000007ec471fa9a5d8d9276ac1d80.png"
                 alt="Hemanth Kumar"
                 className="w-full h-full object-cover scale-110 object-top"
                 referrerPolicy="no-referrer"
@@ -163,46 +160,8 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* CTA Buttons at the bottom of the section */}
-
-
-      <AnimatePresence>
-        {showCV && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10 bg-black/80 backdrop-blur-md"
-            onClick={() => setShowCV(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.95, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-[#050810] border border-[#3b82f6]/30 w-full max-w-5xl h-[85vh] rounded-2xl flex flex-col overflow-hidden shadow-[0_0_50px_rgba(59,130,246,0.1)] relative"
-            >
-              <div className="flex justify-between items-center p-4 border-b border-white/10 bg-black/40">
-                <User className="w-5 h-5 text-[#3b82f6]" /> Hemanth_Kumar_Reddy_Resume.pdf
-                <button
-                  onClick={() => setShowCV(false)}
-                  className="p-2 bg-white/10 rounded-full hover:bg-white/20 hover:text-[#ff0055] transition-colors text-white cursor-pointer group"
-                >
-                  <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
-                </button>
-              </div>
-              <iframe
-                src="/certificates/Hemanth.pdf"
-                className="w-full flex-grow bg-white border-none"
-                title="CV Preview"
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Robot Spline - Absolute positioned at the very bottom */}
-      <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] pointer-events-auto z-10 transition-opacity duration-1000 overflow-visible">
+      {/* Robot Spline - Moderate size as requested */}
+      <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-[620px] h-[620px] pointer-events-auto z-10 transition-opacity duration-1000 overflow-visible">
         {isHeroInView && (
           <Spline scene="https://prod.spline.design/XsM5ixmTunsJ4Xem/scene.splinecode" className="!overflow-visible" />
         )}

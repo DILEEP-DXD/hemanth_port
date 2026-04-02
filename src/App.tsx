@@ -2,7 +2,11 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { MagneticCursor } from "./components/ui/magnetic-cursor";
 import LoadingScreen from "./components/LoadingScreen";
-import { Menu, X, Home, Folder, Trophy, Mail, User, Code2, Award, FileText, GraduationCap, ArrowUp, Download, ExternalLink, Eye, Monitor } from "lucide-react";
+import { 
+  Menu, X, Home, Folder, Trophy, Mail, User, Code2, Award, 
+  FileText, GraduationCap, ArrowUp, Download, ExternalLink, 
+  Eye, Monitor, FileDown, Rocket, ChevronUp 
+} from "lucide-react";
 
 // Lazy load heavy components and sections
 const Hero = lazy(() => import("./sections/Hero"));
@@ -46,13 +50,25 @@ export default function App() {
     { name: "About", href: "#about", num: "02", icon: User },
     { name: "Skills", href: "#skills", num: "03", icon: Code2 },
     { name: "Projects", href: "#projects", num: "04", icon: Folder },
-    { name: "Certifications & Courses", href: "#certifications", num: "05", icon: Award },
+    { name: "Certifications", href: "#certifications", num: "05", icon: Award },
     { name: "Education", href: "#education", num: "06", icon: GraduationCap },
     { name: "Contact", href: "#contact", num: "07", icon: Mail },
   ];
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Variants for navbar tooltips to fix hover visibility
+  const tooltipVariants = {
+    initial: { opacity: 0, y: 10, scale: 0.8, x: "-50%" },
+    hover: { 
+      opacity: 1, 
+      y: -45, 
+      scale: 1, 
+      x: "-50%",
+      transition: { type: "spring", stiffness: 300, damping: 20 }
+    }
   };
 
   return (
@@ -86,28 +102,33 @@ export default function App() {
               <motion.a
                 key={link.name}
                 href={link.href}
-                whileHover={{ y: -4, scale: 1.1 }}
+                data-magnetic
+                initial="initial"
+                whileHover="hover"
                 whileTap={{ scale: 0.95 }}
-                className="relative group p-3 rounded-xl transition-colors hover:bg-white/5"
+                className="relative group p-3 rounded-xl transition-colors hover:bg-white/5 z-10"
               >
                 <link.icon className="w-5 h-5 text-gray-400 group-hover:text-[var(--color-primary)] transition-colors" />
                 
-                {/* Tooltip */}
-                <span className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-black/90 border border-white/10 text-white text-[10px] font-orbitron font-bold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap tracking-wider shadow-xl">
+                {/* Fixed Tooltip using Variants */}
+                <motion.span 
+                  variants={tooltipVariants}
+                  className="absolute left-1/2 px-3 py-1.5 bg-black/90 border border-[var(--color-primary)]/40 text-[var(--color-primary)] text-[9px] font-gaming font-bold rounded-lg pointer-events-none whitespace-nowrap tracking-[0.2em] shadow-[0_0_30px_rgba(0,245,255,0.2)]"
+                >
                   {link.name.toUpperCase()}
-                </span>
+                  <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-black border-r border-b border-[var(--color-primary)]/40 rotate-45" />
+                </motion.span>
                 
-                {/* Active Indicator (subtle dot) */}
                 <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-[var(--color-primary)] rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-[0_0_5px_var(--color-primary)]" />
               </motion.a>
             ))}
 
-            {/* Vertical Divider */}
             <div className="w-px h-6 bg-white/10 mx-2" />
 
-            {/* SPLIT STYLE RESUME BUTTON */}
+            {/* UPDATED RESUME BUTTON WITH NEW ICON */}
             <div className="flex items-center bg-white/5 rounded-xl border border-white/5 overflow-hidden group/resume">
                <motion.button
+                 data-magnetic
                  whileHover={{ backgroundColor: "rgba(0, 245, 255, 0.1)" }}
                  onClick={() => setShowResumeHUD(true)}
                  className="flex items-center gap-2 px-4 py-2 text-[10px] font-gaming font-bold text-gray-300 hover:text-[var(--color-primary)] transition-colors border-r border-white/5"
@@ -116,89 +137,89 @@ export default function App() {
                  PREVIEW
                </motion.button>
                <motion.a
+                 data-magnetic
                  href={resumeLink}
                  target="_blank"
                  rel="noopener noreferrer"
                  whileHover={{ backgroundColor: "rgba(0, 245, 255, 0.1)" }}
                  className="flex items-center justify-center p-2 text-gray-400 hover:text-[var(--color-primary)] transition-colors"
+                 title="Download CV"
                >
-                 <ExternalLink className="w-4 h-4" />
+                 <FileDown className="w-4 h-4" />
                </motion.a>
             </div>
           </div>
         </motion.nav>
 
-        {/* Ultimate Back to Top Button */}
+        {/* Enhanced Back to Top Button - Aggressive Gaming Style */}
         <AnimatePresence>
           {isAtBottom && (
             <motion.button
-              initial={{ opacity: 0, scale: 0.5, y: 50 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.5, y: 50 }}
-              whileHover={{ scale: 1.1 }}
+              initial={{ opacity: 0, scale: 0.5, y: 100, rotate: -20 }}
+              animate={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
+              exit={{ opacity: 0, scale: 0.5, y: 100, rotate: 20 }}
+              whileHover="hover"
               whileTap={{ scale: 0.9 }}
               onClick={scrollToTop}
-              className="fixed bottom-12 right-12 z-[100] group cursor-pointer"
+              className="fixed bottom-12 right-12 z-[150] cursor-pointer group"
+              data-magnetic
             >
-              {/* Layered Hexagonal Base */}
-              <div className="relative w-20 h-20 flex items-center justify-center">
-                 {/* Background Glow */}
-                 <div className="absolute inset-0 bg-[var(--color-primary)]/20 blur-2xl group-hover:bg-[var(--color-primary)]/40 transition-all duration-500 rounded-full" />
-                 
-                 {/* Scroll Progress Ring */}
-                 <svg className="absolute inset-0 w-full h-full -rotate-90">
-                    <circle
-                       cx="40"
-                       cy="40"
-                       r="36"
-                       stroke="currentColor"
-                       strokeWidth="2"
-                       fill="transparent"
-                       className="text-white/5"
-                    />
-                    <motion.circle
-                       cx="40"
-                       cy="40"
-                       r="36"
-                       stroke="currentColor"
-                       strokeWidth="2"
-                       strokeDasharray="226.2"
-                       strokeDashoffset="226.2"
-                       style={{ pathLength: scrollYProgress }}
-                       fill="transparent"
-                       className="text-[var(--color-primary)] shadow-[0_0_10px_var(--color-primary)]"
-                    />
-                 </svg>
+              <div className="relative">
+                {/* Multi-layered Glow */}
+                <div className="absolute inset-0 bg-[var(--color-primary)]/20 blur-3xl rounded-full scale-150 group-hover:bg-[var(--color-primary)]/40 transition-all duration-700" />
+                
+                {/* Industrial Octagonal Frame */}
+                <div className="relative w-20 h-20 bg-[#020408]/90 border-2 border-[var(--color-primary)]/50 flex flex-col items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.8)] overflow-hidden transition-all duration-500 group-hover:border-[var(--color-primary)] group-hover:shadow-[0_0_40px_rgba(0,245,255,0.4)]"
+                     style={{ clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)' }}>
+                   
+                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-primary)]/20 via-transparent to-transparent opacity-50" />
+                   <div className="absolute inset-0 hud-scanline opacity-30" />
+                   
+                   {/* Orbiting Ring */}
+                   <motion.div 
+                     animate={{ rotate: 360 }}
+                     transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                     className="absolute inset-0 border border-t-[var(--color-primary)] border-transparent rounded-full opacity-20"
+                   />
 
-                 {/* Main Hex Body */}
-                 <div 
-                   className="relative w-14 h-14 bg-[#020408] border-2 border-[var(--color-primary)]/50 flex flex-col items-center justify-center transition-all duration-500 group-hover:border-[var(--color-primary)] group-hover:shadow-[0_0_20px_var(--color-primary)] overflow-hidden"
-                   style={{ clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)' }}
-                 >
-                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-primary)]/10 to-transparent" />
-                    <div className="absolute inset-0 hud-scanline opacity-20" />
-                    
-                    <motion.div
-                       animate={{ y: [0, -2, 0] }}
-                       transition={{ repeat: Infinity, duration: 2 }}
-                    >
-                       <ArrowUp className="w-6 h-6 text-[var(--color-primary)]" />
-                    </motion.div>
-                 </div>
-                 
-                 {/* Technical Labels */}
-                 <div className="absolute -top-12 left-1/2 -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    <div className="px-2 py-1 bg-black/80 border border-[var(--color-primary)]/30 backdrop-blur-md rounded font-gaming text-[8px] tracking-[0.4em] text-[var(--color-primary)] shadow-2xl">
-                       UP_LINK
-                    </div>
-                    <div className="w-px h-4 bg-[var(--color-primary)]/40" />
-                 </div>
+                   <motion.div
+                      animate={{ y: [0, -4, 0] }}
+                      transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                      className="relative z-10 flex flex-col items-center"
+                   >
+                      <Rocket className="w-7 h-7 text-[var(--color-primary)] filter drop-shadow-[0_0_8px_var(--color-primary)]" />
+                   </motion.div>
+                </div>
+
+                {/* Cyber Label - Using variants for consistent hover */}
+                <motion.div 
+                   variants={{
+                     initial: { opacity: 0, y: 10, scale: 0.8, x: "-50%" },
+                     hover: { opacity: 1, y: -10, scale: 1, x: "-50%" }
+                   }}
+                   initial="initial"
+                   className="absolute left-1/2 w-max px-4 py-1.5 bg-[#12141a]/95 border border-[var(--color-primary)]/30 rounded-md backdrop-blur-xl flex flex-col items-center gap-1 pointer-events-none"
+                >
+                   <span className="text-[10px] font-gaming font-black text-[var(--color-primary)] tracking-[0.5em] uppercase drop-shadow-[0_0_5px_rgba(0,245,255,1)]">
+                     NAV_TO_TOP
+                   </span>
+                   <div className="flex gap-1">
+                      <div className="w-1 h-1 bg-[var(--color-primary)]/40 rounded-full animate-ping" />
+                      <div className="w-1 h-1 bg-[var(--color-primary)]/40 rounded-full" />
+                      <div className="w-1 h-1 bg-[var(--color-primary)]/40 rounded-full" />
+                   </div>
+                </motion.div>
+
+                {/* Scroll Indicator */}
+                <div className="absolute -bottom-2 -right-2 bg-[var(--color-primary)] text-black font-gaming font-bold text-[8px] px-2 py-0.5 rounded shadow-[0_0_10px_var(--color-primary)]">
+                   {Math.round(scrollYProgress.get() * 100)}%
+                </div>
               </div>
             </motion.button>
           )}
         </AnimatePresence>
 
-        {/* RESUME PREVIEW HUD */}
+        {/* RESUME PREVIEW HUD (Previous content preserved) */}
         <AnimatePresence>
           {showResumeHUD && (
             <motion.div
@@ -243,7 +264,7 @@ export default function App() {
                     <motion.a
                       whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
                       whileTap={{ scale: 0.95 }}
-                      href={resumeLink} // Using drive link for download as well (Drive link has a download option)
+                      href={resumeLink} 
                       className="p-3 border border-white/10 text-gray-400 hover:text-white rounded-xl transition-all"
                       title="Download CV"
                     >
@@ -300,10 +321,10 @@ export default function App() {
             >
               {navLinks.map((link) => (
                 <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center text-2xl font-medium text-gray-300 hover:text-[#00ffff] transition-colors tracking-wide"
+                   key={link.name}
+                   href={link.href}
+                   onClick={() => setIsMobileMenuOpen(false)}
+                   className="flex items-center text-2xl font-medium text-gray-300 hover:text-[#00ffff] transition-colors tracking-wide"
                 >
                   {link.name}
                 </a>

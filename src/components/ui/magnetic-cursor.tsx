@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, FC, ReactNode, useState } from 'react';
+import React, { useRef, useEffect, FC, ReactNode, useState, useMemo } from 'react';
 import gsap from 'gsap';
 
 export class Vec2 {
@@ -31,11 +31,6 @@ interface MagneticCursorProps {
   speedMultiplier?: number;
   maxScaleX?: number;
   maxScaleY?: number;
-  /** 
-   * Boosts background contrast before blending. 
-   * Higher values (1.5 - 2.0) fix visibility on low-contrast/dim backgrounds.
-   * Default: 1.5 (150%)
-   */
   contrastBoost?: number;
 }
 
@@ -57,19 +52,20 @@ export const MagneticCursor: FC<MagneticCursorProps> = ({
   hoverPadding = 12,
   hoverAttribute = 'data-magnetic',
   cursorSize = 24,
-  cursorColor = 'white', // Pure white works best for exclusion/difference
-  blendMode = 'exclusion', // Exclusion is safer than difference for text
+  cursorColor = 'white',
+  blendMode = 'exclusion',
   cursorClassName = '',
   shape = 'circle',
   disableOnTouch = true,
   speedMultiplier = 0.02,
   maxScaleX = 1,
   maxScaleY = 0.3,
-  contrastBoost = 1, // Disabled by default for maximum performance
+  contrastBoost = 1,
 }) => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorStateRef = useRef<CursorState | null>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const activeListeners = useRef<Map<HTMLElement, any>>(new Map());
 
   const configRef = useRef({
     magneticFactor,
@@ -153,80 +149,28 @@ export const MagneticCursor: FC<MagneticCursorProps> = ({
       }
     };
 
-    const initializePosition = (event: MouseEvent) => {
-      const state = cursorStateRef.current;
-      if (!state) return;
-      const x = event.clientX;
-      const y = event.clientY;
-      state.pos.current.x = x;
-      state.pos.current.y = y;
-      state.pos.target.x = x;
-      state.pos.target.y = y;
-      state.pos.previous.x = x;
-      state.pos.previous.y = y;
-      gsap.set(cursorEl, { x, y, opacity: 1 });
-    };
+    const attachMagnetic = (el: HTMLElement) => {
+      if (activeListeners.current.has(el)) return;
 
-    const onMouseMove = (event: PointerEvent) => {
-      const state = cursorStateRef.current;
-      if (!state) return;
-      
-      state.pos.target.x = event.clientX;
-      state.pos.target.y = event.clientY;
-
-      const isInViewport =
-        event.clientX >= 0 &&
-        event.clientX <= window.innerWidth &&
-        event.clientY >= 0 &&
-        event.clientY <= window.innerHeight;
-
-      gsap.to(cursorEl, { opacity: isInViewport ? 1 : 0, duration: 0.2, overwrite: 'auto' });
-
-      const target = event.target as HTMLElement | null;
-      const isTextContent = target ? ['P', 'SPAN', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'A', 'BUTTON'].includes(target.tagName) : false;
-
-      if (isTextContent && !state.hover.isHovered && !state.isDetaching) {
-        gsap.to(cursorEl, { scaleX: 0.5, scaleY: 1.5, duration: 0.3, overwrite: 'auto' });
-      }
-    };
-
-    const handleMouseLeave = () => gsap.to(cursorEl, { opacity: 0, duration: 0.3 });
-    const handleMouseEnter = () => gsap.to(cursorEl, { opacity: 1, duration: 0.3 });
-    const handleClick = (event: MouseEvent) => {};
-
-    gsap.ticker.add(update);
-    window.addEventListener('pointermove', onMouseMove);
-    window.addEventListener('pointermove', initializePosition, { once: true });
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseenter', handleMouseEnter);
-    window.addEventListener('click', handleClick);
-
-    const cleanupFunctions: (() => void)[] = [];
-
-    const magneticElements = gsap.utils.toArray<HTMLElement>(`[${hoverAttribute}]`);
-    magneticElements.forEach((el) => {
       const xTo = gsap.quickTo(el, 'x', { duration: 0.5, ease: 'elastic.out(1, 0.3)' });
       const yTo = gsap.quickTo(el, 'y', { duration: 0.5, ease: 'elastic.out(1, 0.3)' });
 
       const handlePointerEnter = () => {
         const state = cursorStateRef.current;
         if (!state) return;
-        const { magneticFactor, hoverPadding } = configRef.current;
-
         state.hover.isHovered = true;
         state.isDetaching = false;
 
         const bounds = el.getBoundingClientRect();
         const computedStyle = window.getComputedStyle(el);
         const magneticColor = el.getAttribute('data-magnetic-color') || cursorColor;
+        const { magneticFactor, hoverPadding } = configRef.current;
         const dynamicPadding = hoverPadding * (1 + magneticFactor);
-        const centerX = bounds.left + bounds.width / 2;
-        const centerY = bounds.top + bounds.height / 2;
 
         gsap.killTweensOf(cursorEl);
         gsap.to(cursorEl, {
-          x: centerX,
-          y: centerY,
+          x: bounds.left + bounds.width / 2,
+          y: bounds.top + bounds.height / 2,
           width: bounds.width + dynamicPadding * 2,
           height: bounds.height + dynamicPadding * 2,
           borderRadius: computedStyle.borderRadius,
@@ -234,7 +178,7 @@ export const MagneticCursor: FC<MagneticCursorProps> = ({
           scaleX: 1,
           scaleY: 1,
           rotate: 0,
-          duration: 0.3, 
+          duration: 0.3,
           ease: 'power3.out',
           overwrite: true
         });
@@ -243,16 +187,13 @@ export const MagneticCursor: FC<MagneticCursorProps> = ({
       const handlePointerLeave = () => {
         const state = cursorStateRef.current;
         if (!state) return;
-        const currentX = gsap.getProperty(cursorEl, "x") as number;
-        const currentY = gsap.getProperty(cursorEl, "y") as number;
-
-        state.pos.current.x = currentX;
-        state.pos.current.y = currentY;
-        state.pos.previous.x = currentX;
-        state.pos.previous.y = currentY;
-
         state.hover.isHovered = false;
         state.isDetaching = true;
+
+        const currentX = gsap.getProperty(cursorEl, "x") as number;
+        const currentY = gsap.getProperty(cursorEl, "y") as number;
+        state.pos.current.x = currentX;
+        state.pos.current.y = currentY;
 
         const { cursorSize } = configRef.current;
         const shapeBorderRadius = shape === 'circle' ? '50%' : shape === 'square' ? '0' : '8px';
@@ -292,46 +233,82 @@ export const MagneticCursor: FC<MagneticCursorProps> = ({
       el.addEventListener('pointermove', handlePointerMove);
       el.addEventListener('pointerout', handlePointerOut);
 
-      cleanupFunctions.push(() => {
+      activeListeners.current.set(el, () => {
         el.removeEventListener('pointerenter', handlePointerEnter);
         el.removeEventListener('pointerleave', handlePointerLeave);
         el.removeEventListener('pointermove', handlePointerMove);
         el.removeEventListener('pointerout', handlePointerOut);
       });
+    };
+
+    const syncMagneticElements = () => {
+      const elements = document.querySelectorAll<HTMLElement>(`[${hoverAttribute}]`);
+      elements.forEach(attachMagnetic);
+    };
+
+    const initializePosition = (event: MouseEvent) => {
+      const state = cursorStateRef.current;
+      if (!state) return;
+      state.pos.current.x = event.clientX;
+      state.pos.current.y = event.clientY;
+      state.pos.target.x = event.clientX;
+      state.pos.target.y = event.clientY;
+      gsap.set(cursorEl, { x: event.clientX, y: event.clientY, opacity: 1 });
+    };
+
+    const onMouseMove = (event: PointerEvent) => {
+      const state = cursorStateRef.current;
+      if (!state) return;
+      state.pos.target.x = event.clientX;
+      state.pos.target.y = event.clientY;
+      gsap.to(cursorEl, { opacity: 1, duration: 0.2, overwrite: 'auto' });
+    };
+
+    gsap.ticker.add(update);
+    window.addEventListener('pointermove', onMouseMove);
+    window.addEventListener('pointermove', initializePosition, { once: true });
+    
+    // Initial sync
+    syncMagneticElements();
+
+    // MutationObserver to watch for new elements
+    const observer = new MutationObserver(() => {
+      syncMagneticElements();
     });
+    observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
       gsap.ticker.remove(update);
       window.removeEventListener('pointermove', onMouseMove);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('mouseenter', handleMouseEnter);
-      window.removeEventListener('click', handleClick);
-      cleanupFunctions.forEach((cleanup) => cleanup());
+      observer.disconnect();
+      activeListeners.current.forEach((cleanup) => cleanup());
+      activeListeners.current.clear();
     };
-  }, [disableOnTouch, isTouchDevice, hoverPadding, hoverAttribute, cursorColor, shape]);
+  }, [disableOnTouch, isTouchDevice, hoverAttribute, cursorColor, shape]);
 
   if (disableOnTouch && isTouchDevice) return <>{children}</>;
 
-  const styles: React.CSSProperties = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    zIndex: 9999,
-    pointerEvents: 'none',
-    willChange: 'transform, width, height, border-radius',
-    backgroundColor: cursorColor,
-    mixBlendMode: blendMode as any,
-    width: cursorSize,
-    height: cursorSize,
-    borderRadius: shape === 'circle' ? '50%' : shape === 'square' ? '0' : '8px',
-    // KEY FIX: Contrast Boost using backdrop-filter
-    backdropFilter: contrastBoost !== 1 ? `contrast(${contrastBoost})` : 'none',
-    WebkitBackdropFilter: contrastBoost !== 1 ? `contrast(${contrastBoost})` : 'none',
-  };
-
   return (
     <>
-      <div ref={cursorRef} className={`magnetic-cursor ${cursorClassName}`} style={styles} />
+      <div 
+        ref={cursorRef} 
+        className={`magnetic-cursor ${cursorClassName}`} 
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          zIndex: 9999,
+          pointerEvents: 'none',
+          willChange: 'transform, width, height, border-radius',
+          backgroundColor: cursorColor,
+          mixBlendMode: blendMode as any,
+          width: cursorSize,
+          height: cursorSize,
+          borderRadius: shape === 'circle' ? '50%' : shape === 'square' ? '0' : '8px',
+          backdropFilter: contrastBoost !== 1 ? `contrast(${contrastBoost})` : 'none',
+          WebkitBackdropFilter: contrastBoost !== 1 ? `contrast(${contrastBoost})` : 'none',
+        }} 
+      />
       {children}
     </>
   );

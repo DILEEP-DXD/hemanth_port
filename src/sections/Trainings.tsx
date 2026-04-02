@@ -52,8 +52,8 @@ export default function Trainings() {
                     <div>
                        <h3 className="text-white font-gaming text-lg tracking-widest uppercase">Academic_Deployment</h3>
                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_5px_#22c55e]" />
-                          <span className="text-[10px] font-terminal text-gray-500 uppercase">Status: ACTIVE_TRACKING</span>
+                          <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shadow-[0_0_5px_#3b82f6]" />
+                          <span className="text-[10px] font-terminal text-gray-500 uppercase tracking-widest">Status: MISSION_COMPLETE</span>
                        </div>
                     </div>
                  </div>
@@ -91,8 +91,8 @@ export default function Trainings() {
                        {/* PROGRESS TRACKER */}
                        <div className="space-y-4 pt-4 bg-white/[0.02] p-6 rounded-2xl border border-white/5">
                           <div className="flex justify-between text-[11px] font-gaming text-white/40 tracking-[0.2em]">
-                             <span className="flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-[var(--color-primary)] animate-ping" /> MISSION_PROGRESS</span>
-                             <span className="text-[var(--color-primary)]">Phase_03 / 04</span>
+                             <span className="flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-[var(--color-primary)]" /> MISSION_COMPLETE</span>
+                             <span className="text-[var(--color-primary)]">Phase_04 / 04</span>
                           </div>
                           <div className="h-3 w-full bg-black/40 rounded-full overflow-hidden border border-white/5 p-0.5">
                              <motion.div 
@@ -116,43 +116,43 @@ export default function Trainings() {
                  <div className="lg:col-span-5 p-10 bg-white/[0.01] flex flex-col justify-center">
                     <div className="mb-6 flex items-center justify-between">
                        <div className="flex items-center gap-2">
-                          <ShieldCheck className="w-4 h-4 text-green-500" />
+                          <ShieldCheck className="w-4 h-4 text-blue-500" />
                           <span className="text-[10px] font-gaming text-white/40 tracking-[0.3em] uppercase">Credential_Module</span>
                        </div>
                     </div>
 
-                    <div 
-                       className="aspect-[4/3] rounded-2xl overflow-hidden border-2 border-white/5 relative group cursor-pointer shadow-2xl hover:border-[var(--color-primary)]/30 transition-all duration-500"
-                       onClick={() => setShowCertPreview(true)}
-                    >
-                       <PdfPreview fileUrl="/hemanth-dsa.pdf" />
-                       <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-4">
-                          <div className="w-16 h-16 rounded-full bg-[var(--color-primary)] text-black flex items-center justify-center shadow-[0_0_30px_rgba(0,245,255,0.6)]">
-                             <Eye className="w-8 h-8" />
-                          </div>
-                          <span className="text-[10px] font-gaming text-[var(--color-primary)] font-bold tracking-[0.4em] uppercase">Authorize_Preview</span>
-                       </div>
-                    </div>
-
-                    <div className="mt-8 grid grid-cols-2 gap-4">
-                       <motion.button
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
+                       <div 
+                          className="aspect-[4/3] rounded-2xl overflow-hidden border-2 border-white/5 relative group cursor-pointer shadow-2xl hover:border-[var(--color-primary)]/30 transition-all duration-500"
                           onClick={() => setShowCertPreview(true)}
-                          className="flex items-center justify-center gap-3 px-4 py-4 bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 rounded-xl font-gaming font-bold text-[10px] tracking-widest hover:bg-[var(--color-primary)]/20 transition-all"
                        >
-                          <Eye className="w-4 h-4" /> PREVIEW
-                       </motion.button>
-                       <motion.a
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          href="/hemanth-dsa.pdf"
-                          download
-                          className="flex items-center justify-center gap-3 px-4 py-4 bg-white/5 text-gray-300 border border-white/10 rounded-xl font-gaming font-bold text-[10px] tracking-widest hover:bg-white/10 transition-all"
-                       >
-                          <Download className="w-4 h-4" /> DOWNLOAD
-                       </motion.a>
-                    </div>
+                          <PdfPreview fileUrl="/hemanth-advanced-dsa.pdf" />
+                          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-4">
+                             <div className="w-16 h-16 rounded-full bg-[var(--color-primary)] text-black flex items-center justify-center shadow-[0_0_30px_rgba(0,245,255,0.6)]">
+                                <Eye className="w-8 h-8" />
+                             </div>
+                             <span className="text-[10px] font-gaming text-[var(--color-primary)] font-bold tracking-[0.4em] uppercase">Authorize_Preview</span>
+                          </div>
+                       </div>
+
+                       <div className="mt-8 grid grid-cols-2 gap-4">
+                          <motion.button
+                             whileHover={{ scale: 1.02 }}
+                             whileTap={{ scale: 0.98 }}
+                             onClick={() => setShowCertPreview(true)}
+                             className="flex items-center justify-center gap-3 px-4 py-4 bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 rounded-xl font-gaming font-bold text-[10px] tracking-widest hover:bg-[var(--color-primary)]/20 transition-all"
+                          >
+                             <Eye className="w-4 h-4" /> PREVIEW
+                          </motion.button>
+                          <motion.a
+                             whileHover={{ scale: 1.02 }}
+                             whileTap={{ scale: 0.98 }}
+                             href="/hemanth-advanced-dsa.pdf"
+                             download
+                             className="flex items-center justify-center gap-3 px-4 py-4 bg-white/5 text-gray-300 border border-white/10 rounded-xl font-gaming font-bold text-[10px] tracking-widest hover:bg-white/10 transition-all"
+                          >
+                             <Download className="w-4 h-4" /> DOWNLOAD
+                          </motion.a>
+                       </div>
 
                     <div className="mt-8 pt-8 border-t border-white/5 text-center">
                        <p className="text-[9px] font-mono text-gray-600 uppercase tracking-widest mb-1">Accessing secure module:</p>
@@ -169,7 +169,7 @@ export default function Trainings() {
                     <span className="text-[9px] font-gaming tracking-widest uppercase opacity-60">Verified_Academic_Access</span>
                  </div>
                  <div className="w-px h-4 bg-white/10" />
-                 <div className="flex items-center gap-2 text-green-500">
+                 <div className="flex items-center gap-2 text-blue-500">
                     <ShieldCheck className="w-4 h-4" />
                     <span className="text-[9px] font-gaming tracking-widest uppercase opacity-60">Encryption_STABLE</span>
                  </div>
@@ -200,9 +200,9 @@ export default function Trainings() {
                     exit={{ scale: 0.9, opacity: 0, y: -20 }}
                     className="relative max-w-5xl w-full max-h-[85vh] p-2 bg-white/5 border border-white/10 rounded-3xl shadow-[0_0_100px_rgba(0,245,255,0.1)] overflow-hidden"
                     onClick={(e) => e.stopPropagation()}
-                 >
+                  >
                     <div className="w-full h-full min-h-[60vh]">
-                       <PdfPreview fileUrl="/hemanth-dsa.pdf" scale={2} />
+                       <PdfPreview fileUrl="/hemanth-advanced-dsa.pdf" scale={2} />
                     </div>
                     
                     <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center w-full px-6">

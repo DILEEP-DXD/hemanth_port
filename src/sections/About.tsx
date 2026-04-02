@@ -85,10 +85,15 @@ export default function About() {
                   <span className="text-[10px] font-gaming text-primary/60 tracking-widest uppercase">Current_Phase</span>
                   <span className="text-xs font-mono text-white/80">Available for ambitious high-impact projects</span>
                 </div>
-                <div className="flex items-center gap-2 text-primary group cursor-pointer">
+                {/* CONNECTED BUTTON to #contact and data-magnetic added */}
+                <a 
+                   href="#contact" 
+                   data-magnetic
+                   className="flex items-center gap-2 text-primary group cursor-pointer"
+                >
                   <span className="text-[10px] font-gaming tracking-widest uppercase group-hover:mr-2 transition-all">Connect</span>
                   <ArrowUpRight className="w-4 h-4" />
-                </div>
+                </a>
               </div>
             </motion.div>
 
